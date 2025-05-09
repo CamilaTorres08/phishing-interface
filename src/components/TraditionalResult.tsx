@@ -1,10 +1,7 @@
 import { Box, Card, CardActions, Alert, AlertTitle, Typography } from "@mui/material"
 import ShieldIcon from "@mui/icons-material/Shield"
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined"
-import { NLPResponse } from "./Services/NLPResponse"
 import { Traditional } from "./Services/Traditional";
-import { useEffect, useState } from "react";
-import { LoadTable } from "./LoadTable";
 import TabPanel from "./TabPanel";
 
 interface PhishingResultProps {
@@ -12,6 +9,7 @@ interface PhishingResultProps {
 }
 
 export function TraditionalResult({ result }: PhishingResultProps) {
+  console.log("TraditionalResult", result);
   return (
     <Card
       sx={{

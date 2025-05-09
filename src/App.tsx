@@ -1,26 +1,28 @@
 import { useState } from "react";
-import {Box, Button, Typography, Container } from "@mui/material";
+import {Box, Typography, Container } from "@mui/material";
 import { CyberShieldHeader } from "../src/components/CyberShieldHeader"
 import { PhishingDetectorForm } from "./components/PhishingDetectorForm";
-import { PhishingResult } from "./components/PhishingResult";
 import { NLPResponse } from "./components/Services/NLPResponse";
 import { NLPResult } from "./components/NLPResult";
 import { Traditional } from "./components/Services/Traditional";
 import { TraditionalAnalyzer } from "./components/Services/TraditionalService";
 import { PhishingAnalyzer } from "./components/Services/PhishingAnalyzer";
 import { TraditionalResult } from "./components/TraditionalResult";
+import { CombinedResponse } from "./components/Services/CombinedResponse";
+import { CombinedResult } from "./components/CombinedResult";
+
 function App() {
-  const [url, setUrl] = useState("")
-  const [method, setMethod] = useState<PhishingAnalyzer>(TraditionalAnalyzer)
-  const [result, setResult] = useState<NLPResponse | Traditional>()
-  const [loading, setLoading] = useState(false)
+  const [url, setUrl] = useState("");
+  const [method, setMethod] = useState<PhishingAnalyzer>(TraditionalAnalyzer);
+  const [result, setResult] = useState<NLPResponse | Traditional | CombinedResponse>();
+  const [loading, setLoading] = useState(false);
   const getMethodResult = async (url: string) => {
     setLoading(true)
     const r = await method.getResult(url);
     if(r){
       console.log(r);
       setResult(r);
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -72,10 +74,13 @@ function App() {
               setMethod={setMethod}
               loading={loading}
               handleSubmit={handleSubmit}
-            />
-
+            /> 
+            
             { result && 'probabilities' in result && <NLPResult result={result as NLPResponse} /> }
             { result && 'virus_total' in result && <TraditionalResult result={result as Traditional} /> }
+            { result && 'IAAnalyzer' in result && 'TraditionalAnalyzer' in result 
+                     && <CombinedResult result={result as CombinedResponse} />
+                     }
 
             <Box sx={{ textAlign: "center", mt: 4, color: "text.secondary" }}>
               <Typography variant="body2">

@@ -8,6 +8,7 @@ interface PhishingResultProps {
 }
 
 export function NLPResult({ result }: PhishingResultProps) {
+  console.log("NLPResult", result);
   return (
     <Card
       sx={{

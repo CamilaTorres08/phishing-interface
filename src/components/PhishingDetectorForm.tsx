@@ -19,9 +19,11 @@ import {
 } from "@mui/material"
 import ShieldIcon from "@mui/icons-material/Shield"
 import BoltIcon from "@mui/icons-material/Bolt"
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { TraditionalAnalyzer } from "./Services/TraditionalService"
 import { PhishingAnalyzer } from "./Services/PhishingAnalyzer"
 import { IAAnalyzer } from "./Services/NLPService"
+import { CombinedAnalyzer } from "./Services/CombinedService"
 
 interface PhishingDetectorFormProps {
   url: string
@@ -37,7 +39,7 @@ export function PhishingDetectorForm({
   url,
   setUrl,
   method,
-  setMethod,
+  setMethod, 
   loading,
   handleSubmit,
   result,
@@ -57,12 +59,12 @@ export function PhishingDetectorForm({
       <CardHeader
         title={
           <Typography variant="h5" color="#00e5ff">
-            URL Malware Scanner
+            Content Malware Scanner
           </Typography>
         }
         subheader={
           <Typography variant="body2" color="text.secondary">
-            Detect phishing and malicious URLs using advanced detection methods
+            Detect phishing and malicious Content using advanced detection methods
           </Typography>
         }
       />
@@ -74,7 +76,7 @@ export function PhishingDetectorForm({
             <Grid container spacing={2} sx={{
                 justifyContent: "center",
             }}>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <Paper
                   elevation={0}
                   onClick={() => setMethod(TraditionalAnalyzer)}
@@ -113,7 +115,7 @@ export function PhishingDetectorForm({
                   />
                 </Paper>
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <Paper
                   elevation={0}
                   onClick={() => setMethod(IAAnalyzer)}
@@ -152,15 +154,54 @@ export function PhishingDetectorForm({
                   />
                 </Paper>
               </Grid>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Paper
+                  elevation={0}
+                  onClick={() => setMethod(CombinedAnalyzer)}
+                  sx={{
+                    p: 2,
+                    bgcolor: "rgba(0, 0, 0, 0.5)",
+                    border: "2px solid",
+                    borderColor: method === CombinedAnalyzer ? "#88ff00" : "rgba(136, 255, 0, 0.2)",
+                    borderRadius: 2,
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    "&:hover": {
+                      borderColor: "rgba(162, 255, 0, 0.5)",
+                      bgcolor: "rgba(162, 255, 0, 0.05)",
+                    },
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    height: "100%"
+                  }}
+                >
+                  <AutoAwesomeIcon sx={{ color: "#88ff00", fontSize: 32, mb: 1 }} />
+                  <Typography variant="subtitle2">Combined</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Combained method with VirusTotal and NLP
+                  </Typography>
+                  <Radio
+                    checked={method === CombinedAnalyzer}
+                    onChange={() => setMethod(CombinedAnalyzer)}
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        color: method === CombinedAnalyzer ? "#88ff00" : "rgba(255, 255, 255, 0.3)",
+                      },
+                    }}
+                  />
+                </Paper>
+              </Grid>
             </Grid>
           </FormControl>
 
           <FormControl>
-            <FormLabel sx={{ color: "#00e5ff", mb: 1 }}>URL to Scan</FormLabel>
+            <FormLabel sx={{ color: "#00e5ff", mb: 1 }}>Content to Scan</FormLabel>
             <TextField
-                name="url"
+              name="url"
               fullWidth
-              placeholder="Enter URL to analyze (e.g., https://example.com)"
+              placeholder="Enter a text to analyze"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               variant="outlined"
@@ -202,7 +243,7 @@ export function PhishingDetectorForm({
               },
             }}
           >
-            {loading ? "Analyzing..." : "Scan URL"}
+            {loading ? "Analyzing..." : "Scan content"}
           </Button>
 
           {loading && (
